@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Flaschards</title>
+</head>
+
+<body>
+    <h2>Your Flaschards</h2>
+
+    {% if flashcards %}
+        <ul>
+            {% for card in flashcards %}
+                <li>
+                    <strong>Question:</strong> {{ card.question }}<br>
+                    <strong>Answer:</strong> {{ card.answer }}<br>
+                    {% if card.topic %}
+                        <em>Topic:</em> {{ card.topic }}
+                    {% endif %}
+
+                    <form method="POST" action="{{ url_for('main.delete_flashcard', id=card.id) }}" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Delete this flashcard?')">Delete</button>
+                    </form>
+                    
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't created any flashcards yet.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('main.create_flashcard') }}">Create another flashcard</a></p>
+    <p><a href="{{ url_for('main.home') }}">Back to Home</a></p>
+</body>
+</html>

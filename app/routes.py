@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from . import db
-from .models import User
+from .models import User, Flashcard
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -58,3 +58,45 @@ def logout():
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('main.login'))
+
+@main.route('/flashcards/new', methods=['GET','POST'])
+@login_required
+def create_flashcard():
+    if request.method == 'POST':
+        question = request.form.get('question')
+        answer = request.form.get('answer')
+        topic = request.form.get('topic')
+
+        if not question or not answer:
+            flash("Both question and answer are required.")
+            return redirect(url_for('main.create_flashcard'))
+        
+        new_card = Flashcard(question = question, answer = answer, topic = topic, user_id = current_user.id)
+
+        db.session.add(new_card)
+        db.session.commit()
+
+        flash("Flashcard created successfully!")
+        return redirect(url_for('main.view_flashcards'))
+
+    return render_template('create_flashcard.html')
+
+@main.route('/flashcards')
+@login_required
+def view_flashcards():
+    flashcards = Flashcard.query.filter_by(user_id=current_user.id).all()
+    return render_template('view_flashcards.html', flashcards=flashcards)
+
+@main.route('/flashcards/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_flashcard(id):
+    card = Flashcard.query.get_or_404(id)
+
+    if card.user_id != current_user.id:
+        flash("You don't have permission to delete this flashcard.")
+        return redirect(url_for('main.view_flashcards'))
+
+    db.session.delete(card)
+    db.session.commit()
+    flash("Flashcard deleted successfully.")
+    return redirect(url_for('main.view_flashcards'))
