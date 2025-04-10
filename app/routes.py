@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from . import db
-from .models import User, Flashcard
+from .models import User, Flashcard, Topic
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -59,19 +59,55 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('main.login'))
 
-@main.route('/flashcards/new', methods=['GET','POST'])
+@main.route('/topics')
+@login_required
+def view_topics():
+    topics = Topic.query.filter_by(user_id=current_user.id).all()
+    return render_template('view_topics.html', topics=topics)
+
+@main.route('/topics/new', methods=['GET','POST'])
+@login_required
+def create_topic():
+    if request.method == 'POST':
+        name = request.form.get('name')
+
+        if not name:
+            flash("Topic name is required.")
+            return redirect(url_for('main.create_topic'))
+        
+        new_topic = Topic(name=name, user_id=current_user.id)
+        db.session.add(new_topic)
+        db.session.commit()
+
+        flash("Topic created successfully!")
+        return redirect(url_for('main.create_flashcard'))
+
+    return render_template('create_topic.html')
+
+@main.route('/flashcards/new', methods=['GET', 'POST'])
 @login_required
 def create_flashcard():
     if request.method == 'POST':
         question = request.form.get('question')
         answer = request.form.get('answer')
-        topic = request.form.get('topic')
+        topic_name = request.form.get('topic').strip()  
 
-        if not question or not answer:
-            flash("Both question and answer are required.")
+        if not question or not answer or not topic_name:
+            flash("All fields are required.")
             return redirect(url_for('main.create_flashcard'))
-        
-        new_card = Flashcard(question = question, answer = answer, topic = topic, user_id = current_user.id)
+
+        topic = Topic.query.filter_by(name=topic_name, user_id=current_user.id).first()
+        if not topic:
+            topic = Topic(name=topic_name, user_id=current_user.id)
+            db.session.add(topic)
+            db.session.commit()
+
+        new_card = Flashcard(
+            question=question,
+            answer=answer,
+            topic_id=topic.id,
+            user_id=current_user.id
+        )
 
         db.session.add(new_card)
         db.session.commit()
@@ -79,7 +115,9 @@ def create_flashcard():
         flash("Flashcard created successfully!")
         return redirect(url_for('main.view_flashcards'))
 
-    return render_template('create_flashcard.html')
+    pre_filled_topic = request.args.get('topic', '')
+    return render_template('create_flashcard.html', pre_filled_topic=pre_filled_topic)
+
 
 @main.route('/flashcards')
 @login_required
@@ -100,3 +138,23 @@ def delete_flashcard(id):
     db.session.commit()
     flash("Flashcard deleted successfully.")
     return redirect(url_for('main.view_flashcards'))
+
+@main.route('/flashcards/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_flashcard(id):
+    card = Flashcard.query.get_or_404(id)
+
+    if card.user_id != current_user.id:
+        flash("You don't have permission to edit this flashcard.")
+        return redirect(url_for('main.view_flashcards'))
+
+    if request.method == 'POST':
+        card.question = request.form.get('question')
+        card.answer = request.form.get('answer')
+        card.topic = request.form.get('topic')
+        
+        db.session.commit()
+        flash("Flashcard updated successfully!")
+        return redirect(url_for('main.view_flashcards'))
+
+    return render_template('edit_flashcard.html', card=card)

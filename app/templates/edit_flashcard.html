@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Flasshcard</title>
+</head>
+
+<body>
+    <h2>Edit Flashcard</h2>
+
+    <form method="POST">
+        <label for="question">Question:</label><br>
+        <input type="text" name="question" value="{{ card.question }}" required><br><br>
+
+        <label for="answer">Answer:</label><br>
+        <input type="text" name="answer" value="{{ card.answer }}" required><br><br>
+
+        <label for="topic">Topic:</label><br>
+        <input type="text" name="topic" value="{{ card.topic }}"><br><br>
+
+        <button type="submit">Update Flashcard</button>
+    </form>
+
+    <p><a href="{{ url_for('main.view_flashcards') }}">Back to Flashcards</a></p>
+    
+</body>
+</html>
