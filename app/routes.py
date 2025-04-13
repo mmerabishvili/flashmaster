@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from . import db
 from .models import User, Flashcard, Topic
 from flask_login import login_user, logout_user, login_required, current_user
@@ -158,3 +158,41 @@ def edit_flashcard(id):
         return redirect(url_for('main.view_flashcards'))
 
     return render_template('edit_flashcard.html', card=card)
+
+@main.route('/study', methods = ['GET', 'POST'])
+@login_required
+def study():
+    topics = Topic.query.filter_by(user_id = current_user.id).all()
+
+    if request.method == 'POST':
+        selected_topic = request.form.get('topic')
+        flashcards = Flashcard.query.filter_by(user_id = current_user.id, topic_id = selected_topic).all()
+
+        if not flashcards:
+            flash("No flashcards in this topic yet.")
+            return redirect(url_for('main.study'))
+
+        session['study_flashcards'] = [f.id for f in flashcards]
+        session['study_index'] = 0
+        return redirect(url_for('main.study_session'))
+
+    return render_template('study_start.html', topics=topics)
+
+@main.route('/study/session', methods = ['GET', 'POST'])
+@login_required
+def study_session():
+    flashcard_ids = session.get('study_flashcards', [])
+    index = session.get('study_index', 0)
+        
+    if not flashcard_ids or index >= len(flashcard_ids):
+        flash("Study session complete!")
+        return redirect(url_for('main.study'))
+            
+    card_id = flashcard_ids[index]
+    card = Flashcard.query.get_or_404(card_id)
+        
+    if request.method == 'POST':
+        session['study_index'] += 1
+        return redirect(url_for('main.study_session'))
+        
+    return render_template('study_session.html', card=card)
