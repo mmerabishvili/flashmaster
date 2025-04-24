@@ -8,8 +8,12 @@
     <h2>Welcome to FlashMaster!</h2>
 
     {% if current_user.is_authenticated %}
-        <p>Hello, {{ current_user.username }}! You’re logged in.</p>
+        <p>Hello, {{ current_user.username }}! You're logged in.</p>
         <p><a href="{{ url_for('main.logout') }}">Logout</a></p>
+        <p><a href="{{ url_for('main.progress') }}">📊 Check Your Progress</a></p>
+        <p><a href="{{ url_for('main.view_topics') }}">📂 View Your Topics</a></p>
+        
+
     {% else %}
         <p>You’re not logged in. <a href="{{ url_for('main.login') }}">Login here</a></p>
     {% endif %}

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: flashmaster
+      POSTGRES_USER: flashuser
+      POSTGRES_PASSWORD: flashpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - DB_NAME=flashmaster
+      - DB_USER=flashuser
+      - DB_PASSWORD=flashpass
+      - DB_HOST=db
+      - DB_PORT=5432
+      - FLASK_ENV=development
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

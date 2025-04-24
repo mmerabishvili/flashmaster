@@ -14,8 +14,9 @@
         <label for="answer">Answer:</label><br>
         <input type="text" name="answer"required><br><br>
 
-        <label for="topic">Topic:</label><br>
-        <input type="text" name="topic" placeholder="e.g. History" value="{{ pre_filled_topic }}" required>
+        <input type="hidden" name="topic" value="{{ topic }}">
+        <p><strong>Topic:</strong> {{ topic }}</p>
+
 
         <button type="submit">Create Flaschard</button>
     </form>

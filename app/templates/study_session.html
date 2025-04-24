@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Session</title>
+    <style>
+        .card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 300px;
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function showAnswer() {
+            document.getElementById('answer').style.display = 'block';
+            document.getElementById('show-btn').style.display = 'none';
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Study Session</h2>
+
+    <p>
+        Mode:
+        <strong style="color: {{ 'green' if mode == 'track' else 'gray' }}">
+            {{ '📊 Tracking Progress' if mode == 'track' else '🧘 Practice Only' }}
+        </strong>
+    </p>
+
+    <div class="card">
+        <h3>Question</h3>
+        <p>{{ card.question }}</p>
+
+        <div id="answer" style="display:none;">
+            <h4>Answer</h4>
+            <p>{{ card.answer }}</p>
+        </div>
+
+        <button id="show-btn" onclick="showAnswer()">Show Answer</button>
+
+        <form method="POST" style="margin-top: 20px;">
+            {% if mode == 'track' %}
+                <button name="answer" value="correct" type="submit">✅ Correct</button>
+                <button name="answer" value="wrong" type="submit">❌ Wrong</button>
+            {% else %}
+                <button type="submit">Next Card</button>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>
