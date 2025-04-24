@@ -6,17 +6,27 @@
 
 <body>
     <h2>Choose a Topic</h2>
+    {% if topics %}
+        <form method="POST">
+            <label for="topic">Select Topic:</label><br>
+            <select name="topic" required>
+                {% for t in topics %}
+                    <option value="{{ t.id }}">{{ t.name }}</option>
+                {% endfor %}
+            </select><br><br>
 
-    <form method="POST">
-        <label for="topic">Select Topic:</label><br>
-        <select name="topic" required>
-            {% for t in topics %}
-                <option value="{{ t.id }}">{{ t.name }}</option>
-            {% endfor %}
-        </select><br><br>
+            <label for="mode">Study Mode:</label><br>
+            <select name="mode" required>
+                <option value="track">📊 Track Progress</option>
+                <option value="practice">🧘 Practice Only</option>
+            </select><br><br>
 
-        <button type="submit">Start Study Session</button>
-    </form>
+            <button type="submit">Start Study Session</button>
+        </form>
+    {% else %}
+        <p>😅 You haven't created any topics yet.</p>
+        <p><a href="{{ url_for('main.create_topic') }}">➕ Create your first topic</a></p>
+    {% endif %}
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}

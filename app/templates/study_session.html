@@ -20,6 +20,15 @@
 </head>
 
 <body>
+    <h2>Study Session</h2>
+
+    <p>
+        Mode:
+        <strong style="color: {{ 'green' if mode == 'track' else 'gray' }}">
+            {{ '📊 Tracking Progress' if mode == 'track' else '🧘 Practice Only' }}
+        </strong>
+    </p>
+
     <div class="card">
         <h3>Question</h3>
         <p>{{ card.question }}</p>
@@ -32,7 +41,12 @@
         <button id="show-btn" onclick="showAnswer()">Show Answer</button>
 
         <form method="POST" style="margin-top: 20px;">
-            <button type="submit">Next Card</button>
+            {% if mode == 'track' %}
+                <button name="answer" value="correct" type="submit">✅ Correct</button>
+                <button name="answer" value="wrong" type="submit">❌ Wrong</button>
+            {% else %}
+                <button type="submit">Next Card</button>
+            {% endif %}
         </form>
     </div>
 </body>
