@@ -145,11 +145,19 @@ def create_flashcard():
 
 
 
-@main.route('/flashcards')
+@main.route('/flashcards', methods = ['GET'])
 @login_required
 def view_flashcards():
-    flashcards = Flashcard.query.filter_by(user_id=current_user.id).all()
-    return render_template('view_flashcards.html', flashcards=flashcards)
+    topic_id = request.args.get('topic_id')
+
+    if topic_id:
+        topic = Topic.query.get_or_404(topic_id)
+        flashcards = Flashcard.query.filter_by(user_id=current_user.id, topic_id=topic_id).all()
+    else:
+        topic = None
+        flashcards = Flashcard.query.filter_by(user_id=current_user.id).all()
+
+    return render_template('view_flashcards.html', flashcards=flashcards, topic = topic)
 
 @main.route('/flashcards/<int:id>/delete', methods=['POST'])
 @login_required
