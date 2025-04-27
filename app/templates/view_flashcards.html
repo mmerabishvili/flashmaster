@@ -1,37 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Flaschards</title>
+    <title>Your Flashcards | FlashMaster</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body>
-    <h2>Your Flaschards</h2>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="text-center mb-4">{{ topic.name }} — Your Flashcards</h2>
 
     {% if flashcards %}
-        <ul>
+        <div class="row">
             {% for card in flashcards %}
-                <li>
-                    <strong>Question:</strong> {{ card.question }}<br>
-                    <strong>Answer:</strong> {{ card.answer }}<br>
-                    {% if card.topic %}
-                        <em>Topic:</em> {{ card.topic.name }}
-                    {% endif %}
+            <div class="col-md-8 offset-md-2 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Question:</h5>
+                        <p class="card-text">{{ card.question }}</p>
 
-                    <form method="POST" action="{{ url_for('main.delete_flashcard', id=card.id) }}" style="display:inline;">
-                        <button type="submit" onclick="return confirm('Delete this flashcard?')">Delete</button>
-                    </form>
+                        <h6 class="card-subtitle mb-2 text-muted">Answer:</h6>
+                        <p class="card-text">{{ card.answer }}</p>
 
-                    <a href="{{ url_for('main.edit_flashcard', id=card.id) }}">Edit</a>
-                    
-                </li>
-                <hr>
+                        <div class="d-flex justify-content-center flex-wrap mt-3">
+                            <form method="POST" action="{{ url_for('main.delete_flashcard', id=card.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm m-1" onclick="return confirm('Delete this flashcard?')">
+                                    🗑️ Delete
+                                </button>
+                            </form>
+
+                            <a href="{{ url_for('main.edit_flashcard', id=card.id) }}" class="btn btn-primary btn-sm m-1">
+                                ✏️ Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>You haven't created any flashcards yet.</p>
+        <div class="text-center">
+            <p class="lead">You haven't created any flashcards yet.</p>
+        </div>
     {% endif %}
 
-    <p><a href="{{ url_for('main.create_flashcard') }}">Create another flashcard</a></p>
-    <p><a href="{{ url_for('main.home') }}">Back to Home</a></p>
+    <div class="text-center mt-5">
+        {% if flashcards %}
+            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
+                ➕ Create Another Flashcard
+            </a>
+        {% else %}
+            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
+                ➕ Create Flashcard
+            </a>
+        {% endif %}
+        <a href="{{ url_for('main.home') }}" class="btn btn-secondary m-2">🏠 Back to Home</a>
+    </div>
+</div>
 </body>
 </html>

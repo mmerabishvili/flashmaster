@@ -1,26 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Flasshcard</title>
+    <title>Edit Flashcard | FlashMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body>
-    <h2>Edit Flashcard</h2>
+<body class="bg-light">
+<div class="container mt-5">
 
-    <form method="POST">
-        <label for="question">Question:</label><br>
-        <input type="text" name="question" value="{{ card.question }}" required><br><br>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h2 class="text-center mb-4">✏️ Edit Flashcard</h2>
 
-        <label for="answer">Answer:</label><br>
-        <input type="text" name="answer" value="{{ card.answer }}" required><br><br>
+                {% with messages = get_flashed_messages(category_filter=["flashcard", "error"]) %}
+                    {% if messages %}
+                        <div class="alert alert-info text-center mb-4">
+                            {% for message in messages %}
+                                <div>{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
 
-        <label for="topic">Topic:</label><br>
-        <input type="text" name="topic" value="{{ card.topic }}"><br><br>
+                <form method="POST">
 
-        <button type="submit">Update Flashcard</button>
-    </form>
+                    <div class="mb-3">
+                        <label for="question" class="form-label">Question:</label>
+                        <input type="text" class="form-control" name="question" value="{{ card.question }}" required>
+                    </div>
 
-    <p><a href="{{ url_for('main.view_flashcards') }}">Back to Flashcards</a></p>
-    
+                    <div class="mb-3">
+                        <label for="answer" class="form-label">Answer:</label>
+                        <input type="text" class="form-control" name="answer" value="{{ card.answer }}" required>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">✅ Update Flashcard</button>
+                    </div>
+
+                </form>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('main.view_flashcards') }}" class="btn btn-secondary">📜 Back to Flashcards</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

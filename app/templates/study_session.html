@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Study Session</title>
-    <style>
-        .card {
-            border: 1px solid #ccc;
-            padding: 20px;
-            width: 300px;
-            margin: auto;
-            text-align: center;
-        }
-    </style>
-    <script>
-        function showAnswer() {
-            document.getElementById('answer').style.display = 'block';
-            document.getElementById('show-btn').style.display = 'none';
-        }
-    </script>
+    <title>Study Session | FlashMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body>
-    <h2>Study Session</h2>
+<body class="bg-light">
+<div class="container mt-5">
 
-    <p>
+    <h2 class="text-center mb-4">Study Session</h2>
+
+    <p class="text-center">
         Mode:
-        <strong style="color: {{ 'green' if mode == 'track' else 'gray' }}">
+        <strong style="color: '{{ 'green' if mode == 'track' else 'gray' }}';">
             {{ '📊 Tracking Progress' if mode == 'track' else '🧘 Practice Only' }}
         </strong>
     </p>
 
-    <div class="card">
-        <h3>Question</h3>
-        <p>{{ card.question }}</p>
-
-        <div id="answer" style="display:none;">
-            <h4>Answer</h4>
-            <p>{{ card.answer }}</p>
+    <div class="flip-card" onclick="flipCard(this)">
+        <div class="flip-card-inner">
+            <div class="flip-card-front">
+                <div>
+                    <h4>Question</h4>
+                    <p>{{ card.question }}</p>
+                    <small class="text-muted">(Click to flip)</small>
+                </div>
+            </div>
+            <div class="flip-card-back">
+                <div>
+                    <h4>Answer</h4>
+                    <p>{{ card.answer }}</p>
+                </div>
+            </div>
         </div>
-
-        <button id="show-btn" onclick="showAnswer()">Show Answer</button>
-
-        <form method="POST" style="margin-top: 20px;">
-            {% if mode == 'track' %}
-                <button name="answer" value="correct" type="submit">✅ Correct</button>
-                <button name="answer" value="wrong" type="submit">❌ Wrong</button>
-            {% else %}
-                <button type="submit">Next Card</button>
-            {% endif %}
-        </form>
     </div>
+
+    <form method="POST" class="text-center mt-4">
+        {% if mode == 'track' %}
+            <button name="answer" value="correct" type="submit" class="btn btn-success m-2">✅ Correct</button>
+            <button name="answer" value="wrong" type="submit" class="btn btn-danger m-2">❌ Wrong</button>
+        {% else %}
+            <button type="submit" class="btn btn-info">➡️ Next Card</button>
+        {% endif %}
+    </form>
+
+</div>
+
+<script>
+    function flipCard(card) {
+        card.classList.toggle('flipped');
+    }
+</script>
+
 </body>
 </html>

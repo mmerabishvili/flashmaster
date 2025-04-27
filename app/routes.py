@@ -76,16 +76,14 @@ def create_topic():
     if request.method == 'POST':
         name = request.form.get('name')
 
-        if not name:
-            flash("Topic name is required.")
-            return redirect(url_for('main.create_topic'))
-        
-        new_topic = Topic(name=name, user_id=current_user.id)
-        db.session.add(new_topic)
-        db.session.commit()
-
-        flash("Topic created successfully!")
-        return redirect(url_for('main.view_topics'))
+        if name:
+            new_topic = Topic(name=name, user_id=current_user.id)
+            db.session.add(new_topic)
+            db.session.commit()
+            flash("Topic created successfully!", "topic")
+            return redirect(url_for('main.view_topics'))  
+        else:
+            flash("Please enter a topic name.", "error")
 
     return render_template('create_topic.html')
 
@@ -170,7 +168,7 @@ def delete_flashcard(id):
 
     db.session.delete(card)
     db.session.commit()
-    flash("Flashcard deleted successfully.")
+    flash("Flashcard deleted successfully!", "flashcard")
     return redirect(url_for('main.view_flashcards'))
 
 @main.route('/flashcards/<int:id>/edit', methods=['GET', 'POST'])
@@ -185,11 +183,10 @@ def edit_flashcard(id):
     if request.method == 'POST':
         card.question = request.form.get('question')
         card.answer = request.form.get('answer')
-        card.topic = request.form.get('topic')
         
         db.session.commit()
-        flash("Flashcard updated successfully!")
-        return redirect(url_for('main.view_flashcards'))
+        flash("Flashcard updated successfully!", "flashcard")
+        return redirect(url_for('main.view_flashcards', topic_id=card.topic_id)) 
 
     return render_template('edit_flashcard.html', card=card)
 
