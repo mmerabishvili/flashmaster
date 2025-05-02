@@ -26,15 +26,18 @@
                     </div>
                 </form>
 
-                {% with messages = get_flashed_messages() %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
                   {% if messages %}
-                    <div class="alert alert-info mt-4">
-                      {% for message in messages %}
-                        <div>{{ message }}</div>
-                      {% endfor %}
-                    </div>
+                    {% for category, message in messages %}
+                      {% if category == 'topic' %}
+                        <div class="alert alert-success text-center w-50 mx-auto mt-4">{{ message }}</div>
+                      {% elif category == 'error' %}
+                        <div class="alert alert-danger text-center w-50 mx-auto mt-4">{{ message }}</div>
+                      {% endif %}
+                    {% endfor %}
                   {% endif %}
                 {% endwith %}
+
 
             </div>
         </div>

@@ -24,7 +24,7 @@
                         {% for session in attempts %}
                         <li class="list-group-item">
                             🧠 Attempt #{{ loop.revindex }} — 
-                            📅 {{ session.timestamp.strftime('%Y-%m-%d %H:%M') }} — 
+                            📅 {{ session.timestamp | localtime }} — 
                             ✅ {{ session.correct }}/{{ session.total }} correct 
                             ({{ (session.correct / session.total * 100) | round(1) }}%)
                         </li>

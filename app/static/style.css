@@ -26,10 +26,20 @@ h1, h2, h3 {
     transition: background-color 0.3s ease;
 }
 
-.btn-custom:hover {
-    background-color: #9d39e4;
-    color: white;
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active{
+    background-color: #9d39e4 !important;
+    color: white !important;
+    text-decoration: none;
+    outline: none;
+    box-shadow: none;
 }
+
+.btn-custom:focus-visible {
+    outline: none;
+}
+
 
 .btn {
     min-width: 150px;
@@ -38,6 +48,7 @@ h1, h2, h3 {
 
 .btn:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-1 {

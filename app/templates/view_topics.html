@@ -10,6 +10,20 @@
 <body class="bg-light">
     <div class="container mt-5">
         <h2 class="text-center mb-4">Your Topics</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'topic' %}
+                        <div class="alert alert-success text-center w-50 mx-auto mt-3">{{ message }}</div>
+                    {% elif category == 'flashcard' %}
+                        <div class="alert alert-success text-center w-50 mx-auto mt-3">{{ message }}</div>
+                    {% elif category == 'error' %}
+                        <div class="alert alert-danger text-center w-50 mx-auto mt-3">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
     </div>
     
     <div class="text-center mb-4">

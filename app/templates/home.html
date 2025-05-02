@@ -9,7 +9,24 @@
 
 <body class = "bg-light">
     <div class="container mt-5 text-center">
-        <h1 class="mb-4 text-success">📚 Welcome to FlashMaster!</h1>
+        <h1 class="mb-4 text-center">📚 Welcome to FlashMaster!</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'auth' %}
+                        <div class="alert alert-success text-center w-50 mx-auto mt-4" role="alert">
+                        {{ message }}
+                        </div>
+                    {% elif category == 'error' %}
+                        <div class="alert alert-danger text-center w-50 mx-auto mt-4" role="alert">
+                        {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
 
         {% if current_user.is_authenticated %}
             <p class="lead">Hello, {{ current_user.username }}! You're logged in.</p>

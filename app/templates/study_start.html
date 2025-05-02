@@ -48,15 +48,22 @@
         </div>
     {% endif %}
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <div class="alert alert-warning mt-4">
-                {% for message in messages %}
-                    <div>{{ message }}</div>
-                {% endfor %}
-            </div>
+            {% for category, message in messages %}
+                {% if category == 'study' %}
+                    <div class="alert alert-warning text-center w-50 mx-auto mt-4" role="alert">
+                    {{ message }}
+                    </div>
+                {% elif category == 'error' %}
+                    <div class="alert alert-danger text-center w-50 mx-auto mt-4" role="alert">
+                    {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
         {% endif %}
     {% endwith %}
+
 
     <div class="text-center mt-4">
         <a href="{{ url_for('main.home') }}" class="btn btn-secondary">🏠 Back to Home</a>

@@ -14,14 +14,16 @@
             <div class="card shadow-sm p-4">
                 <h2 class="text-center mb-4">➕ Create a New Flashcard</h2>
 
-                {% with messages = get_flashed_messages(category_filter=["flashcard", "error"]) %}
-                  {% if messages %}
-                    <div class="alert alert-info text-center mb-4">
-                      {% for message in messages %}
-                        <div>{{ message }}</div>
-                      {% endfor %}
-                    </div>
-                  {% endif %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            {% if category == 'flashcard' %}
+                                <div class="alert alert-success text-center mb-3">{{ message }}</div>
+                            {% elif category == 'error' %}
+                                <div class="alert alert-danger text-center mb-3">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 {% endwith %}
 
                 <form method="POST">
