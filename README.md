@@ -23,10 +23,15 @@
 - **Containerization**: Docker
 
 ---
+## Limitations 
+**Note on timezones**
+> Currently, study session timestamps are displayed in the local timezone (Asia/Tbilisi).
+
 
 ## 🛠 Setup Instructions
 
 1. **Clone the repo**  
 ```bash
-git clone https://github.com/your-username/flashmaster.git
+
+git clone https://github.com/mmerabishvili/flashmaster.git
 cd flashmaster

@@ -18,12 +18,16 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        if User.query.filter_by(email=email).first():    
-            flash("Email already registered. Try logging in or use another email", 'auth')
+        if User.query.filter_by(email=email).first():
+            flash("Email already registered. Try logging in or use another email.", 'error')
             return redirect(url_for('main.register'))
 
         if User.query.filter_by(username=username).first():
-            flash("Username already exists. Please choose another one.", 'auth')
+            flash("Username already exists. Please choose another one.", 'error')
+            return redirect(url_for('main.register'))
+
+        if len(password) < 6:
+            flash("Password must be at least 6 characters long.", 'error')
             return redirect(url_for('main.register'))
 
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
@@ -35,6 +39,7 @@ def register():
         return redirect(url_for('main.login'))
 
     return render_template('register.html')
+
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -60,6 +65,44 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'auth')
     return redirect(url_for('main.login'))
+
+@main.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        current = request.form.get('current_password')
+        new = request.form.get('new_password')
+        confirm = request.form.get('confirm_password')
+
+        if not current_user.check_password(current):
+            flash("Current password is incorrect.", "error")
+        elif new != confirm:
+            flash("New passwords do not match.", "error")
+        elif len(new) < 6:
+            flash("Password must be at least 6 characters.", "error")
+        elif current_user.check_password(new):
+            flash("New password must be different from your current password.", "error")
+        else:
+            current_user.set_password(new)
+            db.session.commit()
+            flash("Password updated successfully!", "auth")
+            return redirect(url_for('main.profile'))
+
+    return render_template('change_password.html')
+
+@main.route('/delete_account', methods=['POST'])
+@login_required
+def delete_account():
+    db.session.delete(current_user)
+    db.session.commit()
+    logout_user()
+    flash("Your account has been deleted.", "info")
+    return redirect(url_for('main.login'))
+
+@main.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html')
 
 @main.route('/topics')
 @login_required
@@ -130,7 +173,7 @@ def create_flashcard():
         db.session.commit()
 
         flash("Flashcard created successfully!", 'flashcard')
-        return redirect(url_for('main.view_topics'))
+        return redirect(url_for('main.view_flashcards', topic_id=topic.id))
 
     return render_template('create_flashcard.html', topic=topic_name)
 
@@ -158,14 +201,12 @@ def delete_flashcard(id):
 
     if card.user_id != current_user.id:
         flash("You don't have permission to delete this flashcard.", 'error')
-        return redirect(url_for('main.view_flashcards', topic_id=topic_id))
-
-    topic_id = card.topic_id  
+        return redirect(url_for('main.view_flashcards', topic_id=card.topic_id))
 
     db.session.delete(card)
     db.session.commit()
     flash("Flashcard deleted successfully!", 'flashcard')
-    return redirect(url_for('main.view_flashcards', topic_id=topic_id))
+    return redirect(url_for('main.view_flashcards', topic_id=card.topic_id))
 
 
 @main.route('/flashcards/<int:id>/edit', methods=['GET', 'POST'])

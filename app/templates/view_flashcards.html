@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Flashcards | FlashMaster</title>
+{% extends 'base.html' %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% block title %}Your Flashcards | FlashMaster{% endblock %}
 
-<body class="bg-light">
+{% block content %}
 <div class="container mt-5">
-    <h2 class="text-center mb-4">{{ topic.name }} — Your Flashcards</h2>
+    <h2 class="text-center mb-4">{{ topic.name }} - Your Flashcards</h2>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -23,6 +18,19 @@
         {% endif %}
     {% endwith %}
 
+    <div class="text-center mb-5">
+        <a href="{{ url_for('main.view_topics') }}" class="btn btn-dark m-2">⬅ Back to Topics</a>
+        {% if flashcards %}
+            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
+                ➕ Create Another Flashcard
+            </a>
+        {% else %}
+            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
+                ➕ Create Flashcard
+            </a>
+        {% endif %}
+        <a href="{{ url_for('main.home') }}" class="btn btn-secondary m-2">🏠 Back to Home</a>
+    </div>
 
     {% if flashcards %}
         <div class="row">
@@ -57,19 +65,5 @@
             <p class="lead">You haven't created any flashcards yet.</p>
         </div>
     {% endif %}
-
-    <div class="text-center mt-5">
-        {% if flashcards %}
-            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
-                ➕ Create Another Flashcard
-            </a>
-        {% else %}
-            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
-                ➕ Create Flashcard
-            </a>
-        {% endif %}
-        <a href="{{ url_for('main.home') }}" class="btn btn-secondary m-2">🏠 Back to Home</a>
-    </div>
 </div>
-</body>
-</html>
+{% endblock %}

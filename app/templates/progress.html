@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Progress | FlashMaster</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% extends 'base.html' %}
 
-<body class="bg-light">
+{% block title %}Progress | FlashMaster{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
 
     <h2 class="text-center mb-4">📊 Your Study Progress</h2>
@@ -40,5 +36,4 @@
     {% endif %}
 
 </div>
-</body>
-</html>
+{% endblock %}

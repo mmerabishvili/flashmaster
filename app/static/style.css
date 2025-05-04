@@ -67,6 +67,13 @@ h1, h2, h3 {
     color: white; 
 }
 
+.profile-btn {
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    z-index: 10;
+}
+
 .card {
     border-radius: 1rem;
     transition: transform 0.2s, box-shadow 0.2s;

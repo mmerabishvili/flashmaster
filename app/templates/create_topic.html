@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Topic | FlashMaster</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% extends 'base.html' %}
 
-<body class="bg-light">
+{% block title %}Create Topic | FlashMaster{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
 
     <div class="row justify-content-center">
@@ -44,5 +40,4 @@
     </div>
 
 </div>
-</body>
-</html>
+{% endblock %}
