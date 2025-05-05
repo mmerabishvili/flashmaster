@@ -216,7 +216,7 @@ def edit_flashcard(id):
 
     if card.user_id != current_user.id:
         flash("You don't have permission to edit this flashcard.", 'error')
-        return redirect(url_for('main.view_flashcards'))
+        return redirect(url_for('main.view_flashcards', topic_id = card.topic_id))
 
     if request.method == 'POST':
         card.question = request.form.get('question')

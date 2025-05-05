@@ -4,10 +4,11 @@ services:
   db:
     image: postgres:16
     restart: always
+    env_file: .env
     environment:
-      POSTGRES_DB: flashmaster
-      POSTGRES_USER: flashuser
-      POSTGRES_PASSWORD: flashpass
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -15,17 +16,12 @@ services:
 
   web:
     build: .
+    working_dir: /app
     ports:
       - "5000:5000"
     volumes:
       - .:/app
-    environment:
-      - DB_NAME=flashmaster
-      - DB_USER=flashuser
-      - DB_PASSWORD=flashpass
-      - DB_HOST=db
-      - DB_PORT=5432
-      - FLASK_ENV=development
+    env_file: .env
     depends_on:
       - db
 

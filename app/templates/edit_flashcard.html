@@ -42,7 +42,7 @@
                 </form>
 
                 <div class="text-center mt-4">
-                    <a href="{{ url_for('main.view_flashcards') }}" class="btn btn-secondary">📜 Back to Flashcards</a>
+                    <a href="{{ url_for('main.view_flashcards', topic_id=card.topic_id) }}" class="btn btn-dark">⬅ Back to Flashcards</a>
                 </div>
 
             </div>
