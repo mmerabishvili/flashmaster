@@ -65,7 +65,7 @@ flashmaster/
 ---
 
 ## Setup Instructions (with Docker)
-1. **Clone the repo**  
+### 1. Clone the Repo
 
 ```
 git clone https://github.com/mmerabishvili/flashmaster.git
