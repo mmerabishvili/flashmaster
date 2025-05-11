@@ -53,6 +53,7 @@ flashmaster/
 │   └── static/            # CSS and static assets
 │
 ├── run.py                 # Entry point to run the Flask app
+├── .gitignore             # Excludes files/folders from Git tracking
 ├── .dockerignore          # Files to exclude from Docker image
 ├── Dockerfile             # Flask container definition
 ├── docker-compose.yml     # Web + DB container setup
