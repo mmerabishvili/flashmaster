@@ -27,10 +27,17 @@
         {% if current_user.is_authenticated %}
             <p class="lead">Hello, {{ current_user.username }}! You're logged in.</p>
 
-            <!-- 👤 Profile button (absolutely positioned within this block) -->
-            <a href="{{ url_for('main.profile') }}" class="btn btn-dark profile-btn">
-                ⚙️ Profile
-            </a>
+            <div class="position-absolute top-0 end-0 p-3" style="z-index: 9999;">
+                <div class="d-flex flex-column align-items-end gap-2">
+                  <a href="{{ url_for('main.profile') }}" class="btn btn-dark">
+                    ⚙️ Profile
+                  </a>
+                  <a href="{{ url_for('main.admin_panel') }}" class="btn btn-dark ">
+                    🔒 Admin
+                  </a>
+                </div>
+            </div>
+              
 
             <!-- Centered main buttons -->
             <div class="d-flex flex-column align-items-center mt-4">

@@ -42,7 +42,7 @@
 
 ## Project Structure
 
-\`\`\`
+```
 flashmaster/
 │
 ├── app/
@@ -53,35 +53,35 @@ flashmaster/
 │   └── static/            # CSS and static assets
 │
 ├── run.py                 # Entry point to run the Flask app
+├── .dockerignore          # Files to exclude from Docker image
 ├── Dockerfile             # Flask container definition
 ├── docker-compose.yml     # Web + DB container setup
 ├── requirements.txt       # Python dependencies
 ├── .env.example           # Sample environment config
 └── README.md
-\`\`\`
+```
 
 ---
 
 ## Setup Instructions (with Docker)
+1. **Clone the repo**  
 
-### 1. Clone the Repository
-
-\`\`\`bash
+```
 git clone https://github.com/mmerabishvili/flashmaster.git
 cd flashmaster
-\`\`\`
+```
 
 ### 2. Set Up Environment Variables
 
 Copy the example env file and fill in your own values:
 
-\`\`\`bash
+```
 cp .env.example .env
-\`\`\`
+```
 
 Edit `.env` and fill in:
 
-\`\`\`
+```
 # Flask settings
 SECRET_KEY=your-secret-key
 FLASK_ENV=development
@@ -100,22 +100,24 @@ DB_PORT=5432
 
 # SQLAlchemy connection URI used by Flask
 DATABASE_URL=postgresql://your-db-username:your-db-password@db:5432/your-db-name
-\`\`\`
+```
 
-- `POSTGRES_*` variables are used by the PostgreSQL Docker container.
-- `DB_*` and `DATABASE_URL` are used by the Flask app to connect to the database.
-- Make sure `DB_USER` and `DB_PASSWORD` match `POSTGRES_USER` and `POSTGRES_PASSWORD`.
+ `POSTGRES_*` variables are used by the PostgreSQL Docker container.
+-`DB_*` and `DATABASE_URL` are used by the Flask app to connect to the database.
+Make sure `DB_USER` and `DB_PASSWORD` match `POSTGRES_USER` and `POSTGRES_PASSWORD`.
 
 
 ### 3. Build and Start the Containers
 
-\`\`\`bash
+```
 docker-compose up --build
-\`\`\`
+```
 
 ### 4. Open the App in Your Browser
 
-Go to: [http://localhost:5000](http://localhost:5000)
+Visit [http://localhost:5000](http://localhost:5000)
+
+> If you're using a terminal or an IDE like VS Code, the `http://127.0.0.1:5000` link shown in the logs may be clickable - feel free to use that directly to access the app.
 
 ---
 

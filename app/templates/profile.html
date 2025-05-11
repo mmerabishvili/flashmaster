@@ -28,7 +28,7 @@
 
     <p><strong>Username:</strong> {{ current_user.username }}</p>
     <p><strong>Email:</strong> {{ current_user.email }}</p>
-    <a href="{{ url_for('main.change_password') }}" class="btn btn-warning mt-3">🔒 Change Password</a>
+    <a href="{{ url_for('main.change_password') }}" class="btn btn-warning mt-3">🔑 Change Password</a>
 
 
     <form method="POST" action="{{ url_for('main.delete_account') }}"

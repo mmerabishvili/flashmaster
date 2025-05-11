@@ -44,4 +44,4 @@ class StudySession(db.Model):
     topic_id = db.Column(db.Integer, db.ForeignKey('topics.id', ondelete='CASCADE'), nullable=False)
     correct = db.Column(db.Integer, nullable=False)
     total = db.Column(db.Integer, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.now)

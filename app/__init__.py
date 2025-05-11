@@ -22,9 +22,9 @@ def create_app():
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     else:
         # Fallback to individual values (if DATABASE_URL not set)
-        DB_NAME = os.getenv("DB_NAME", "flashmaster")
-        DB_USER = os.getenv("DB_USER", "flashuser")
-        DB_PASSWORD = os.getenv("DB_PASSWORD", "flashpass")
+        DB_NAME = os.getenv("DB_NAME", "your-db-name")
+        DB_USER = os.getenv("DB_USER", "your-db-user")
+        DB_PASSWORD = os.getenv("DB_PASSWORD", "your-db-password")
         DB_HOST = os.getenv("DB_HOST", "localhost")
         DB_PORT = os.getenv("DB_PORT", "5432")
 

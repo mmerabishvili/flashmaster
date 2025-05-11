@@ -1,8 +1,18 @@
+# Python
 venv/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Old SQLite artifacts
 *.db
-.env
 /data/
+
+# Environment variables
+.env
+
+# Editor/IDE settings
+.vscode/
+*.swp
+*.bak
