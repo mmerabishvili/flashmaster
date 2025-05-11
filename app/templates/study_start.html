@@ -1,43 +1,68 @@
-<!DOCTYPE html>
-><html>
-<head>
-    <title>Start Study Session</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-    <h2>Choose a Topic</h2>
+{% block title %}Start Study Session | FlashMaster{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Choose a Topic</h2>
+
     {% if topics %}
-        <form method="POST">
-            <label for="topic">Select Topic:</label><br>
-            <select name="topic" required>
-                {% for t in topics %}
-                    <option value="{{ t.id }}">{{ t.name }}</option>
-                {% endfor %}
-            </select><br><br>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm p-4">
+                    <form method="POST">
 
-            <label for="mode">Study Mode:</label><br>
-            <select name="mode" required>
-                <option value="track">📊 Track Progress</option>
-                <option value="practice">🧘 Practice Only</option>
-            </select><br><br>
+                        <div class="mb-3">
+                            <label for="topic" class="form-label">Select Topic:</label>
+                            <select name="topic" id="topic" class="form-select" required>
+                                {% for t in topics %}
+                                    <option value="{{ t.id }}">{{ t.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-            <button type="submit">Start Study Session</button>
-        </form>
+                        <div class="mb-3">
+                            <label for="mode" class="form-label">Study Mode:</label>
+                            <select name="mode" id="mode" class="form-select" required>
+                                <option value="track">📊 Track Progress</option>
+                                <option value="practice">🧘 Practice Only</option>
+                            </select>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">🎯 Start Study Session</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
     {% else %}
-        <p>😅 You haven't created any topics yet.</p>
-        <p><a href="{{ url_for('main.create_topic') }}">➕ Create your first topic</a></p>
+        <div class="text-center">
+            <p class="lead">😅 You haven't created any topics yet.</p>
+            <a href="{{ url_for('main.create_topic') }}" class="btn btn-primary mt-3">➕ Create your first topic</a>
+        </div>
     {% endif %}
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
+            {% for category, message in messages %}
+                {% if category == 'study' %}
+                    <div class="alert alert-warning text-center w-50 mx-auto mt-4" role="alert">
+                    {{ message }}
+                    </div>
+                {% elif category == 'error' %}
+                    <div class="alert alert-danger text-center w-50 mx-auto mt-4" role="alert">
+                    {{ message }}
+                    </div>
+                {% endif %}
             {% endfor %}
-            </ul>
         {% endif %}
     {% endwith %}
 
-    <p><a href="{{ url_for('main.home') }}">Back to Home</a></p>
-</body>
-</html>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('main.home') }}" class="btn btn-secondary">🏠 Back to Home</a>
+    </div>
+</div>
+{% endblock %}

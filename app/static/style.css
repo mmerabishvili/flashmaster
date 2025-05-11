@@ -1,0 +1,130 @@
+body {
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+.btn-info {
+    color: white !important;
+}
+
+.btn-info:hover {
+    background-color: #0aa1d6;
+    color: white !important;
+}
+
+
+.btn-custom {
+    background-color: #b253e4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active{
+    background-color: #9d39e4 !important;
+    color: white !important;
+    text-decoration: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-custom:focus-visible {
+    outline: none;
+}
+
+
+.btn {
+    min-width: 150px;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-1 {
+    background-color: #e6109c;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-1:hover {
+    background-color: #f220af; 
+    transform: scale(1.05);
+    color: white; 
+}
+
+.profile-btn {
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    z-index: 10;
+}
+
+.card {
+    border-radius: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+/* Flip Card Styles */
+.flip-card {
+    background-color: transparent;
+    width: 300px;
+    height: 200px;
+    perspective: 1000px;
+    margin: auto;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+    background-color: #f8f9fa;
+}

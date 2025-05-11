@@ -1,37 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Flaschards</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-    <h2>Your Flaschards</h2>
+{% block title %}Your Flashcards | FlashMaster{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">{{ topic.name }} - Your Flashcards</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'flashcard' %}
+                    <div class="alert alert-success text-center w-50 mx-auto mt-3">{{ message }}</div>
+                {% elif category == 'error' %}
+                    <div class="alert alert-danger text-center w-50 mx-auto mt-3">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="text-center mb-5">
+        <a href="{{ url_for('main.view_topics') }}" class="btn btn-dark m-2">⬅ Back to Topics</a>
+        {% if flashcards %}
+            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
+                ➕ Create Another Flashcard
+            </a>
+        {% else %}
+            <a href="{{ url_for('main.create_flashcard') }}?topic={{ topic.name }}" class="btn btn-success m-2">
+                ➕ Create Flashcard
+            </a>
+        {% endif %}
+        <a href="{{ url_for('main.home') }}" class="btn btn-secondary m-2">🏠 Back to Home</a>
+    </div>
 
     {% if flashcards %}
-        <ul>
+        <div class="row">
             {% for card in flashcards %}
-                <li>
-                    <strong>Question:</strong> {{ card.question }}<br>
-                    <strong>Answer:</strong> {{ card.answer }}<br>
-                    {% if card.topic %}
-                        <em>Topic:</em> {{ card.topic.name }}
-                    {% endif %}
+            <div class="col-md-8 offset-md-2 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Question:</h5>
+                        <p class="card-text">{{ card.question }}</p>
 
-                    <form method="POST" action="{{ url_for('main.delete_flashcard', id=card.id) }}" style="display:inline;">
-                        <button type="submit" onclick="return confirm('Delete this flashcard?')">Delete</button>
-                    </form>
+                        <h6 class="card-subtitle mb-2 text-muted">Answer:</h6>
+                        <p class="card-text">{{ card.answer }}</p>
 
-                    <a href="{{ url_for('main.edit_flashcard', id=card.id) }}">Edit</a>
-                    
-                </li>
-                <hr>
+                        <div class="d-flex justify-content-center flex-wrap mt-3">
+                            <form method="POST" action="{{ url_for('main.delete_flashcard', id=card.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm m-1" onclick="return confirm('Delete this flashcard?')">
+                                    🗑️ Delete
+                                </button>
+                            </form>
+
+                            <a href="{{ url_for('main.edit_flashcard', id=card.id) }}" class="btn btn-primary btn-sm m-1">
+                                ✏️ Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>You haven't created any flashcards yet.</p>
+        <div class="text-center">
+            <p class="lead">You haven't created any flashcards yet.</p>
+        </div>
     {% endif %}
-
-    <p><a href="{{ url_for('main.create_flashcard') }}">Create another flashcard</a></p>
-    <p><a href="{{ url_for('main.home') }}">Back to Home</a></p>
-</body>
-</html>
+</div>
+{% endblock %}

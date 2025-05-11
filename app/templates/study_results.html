@@ -1,36 +1,41 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Study Results</title>
-    </head>
+{% extends 'base.html' %}
 
-    <body>
-        <h2>🎉 Study Session Complete!</h2>
+{% block title %}Study Results | FlashMaster{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="card shadow-sm p-4 mx-auto" style="max-width: 500px;">
+        <h2 class="text-center mb-4">✔️  Study Session Complete!</h2>
 
         {% if mode == 'track' %}
-            <p>You got <strong>{{ correct }}/{{ total }}</strong> flashcards correct.</p>
-    
+            <p class="text-center">You got <strong>{{ correct }}/{{ total }}</strong> flashcards correct.</p>
+
             {% if previous %}
                 {% set prev_percent = (previous.correct / previous.total * 100) %}
                 {% set curr_percent = (correct / total * 100) %}
                 {% set diff = (curr_percent - prev_percent) | round(1) %}
+                
                 {% if diff > 0 %}
-                    <p>📈 You're <strong>{{ diff }}%</strong> better than last time! 💪</p>
+                    <p class="text-success text-center">📈 You're <strong>{{ diff }}%</strong> better than last time! 💪</p>
                 {% elif diff < 0 %}
-                    <p>📉 You're <strong>{{ (-diff) }}%</strong> below your last attempt. Keep going! 🔁</p>
+                    <p class="text-danger text-center">📉 You're <strong>{{ (-diff) }}%</strong> below your last attempt. Keep going! 🔁</p>
                 {% else %}
-                    <p>⚖️ Same performance as last time. Solid consistency! 👏</p>
+                    <p class="text-warning text-center">⚖️ Same performance as last time. Solid consistency! 👏</p>
                 {% endif %}
             {% else %}
-                <p>This was your first time studying this topic! 🚀</p>
+                <p class="text-center">This was your first time studying this topic! 🚀</p>
             {% endif %}
+
         {% else %}
-            <p>🧘 You were in Practice Mode — results weren't tracked. Still good brain work! 🧠</p>
+            <p class="text-center">🧘 You were in Practice Mode — results weren't tracked. Still good brain work! 🧠</p>
         {% endif %}
 
-        <p><a href="{{ url_for('main.progress') }}">📊 Check Your Progress</a></p>
-        <p><a href="{{ url_for('main.home') }}">🏠 Back to Home</a></p>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('main.progress') }}" class="btn btn-custom btn-lg m-2">📊 Check Your Progress</a>
+            <a href="{{ url_for('main.home') }}" class="btn btn-secondary btn-lg m-2">🏠 Back to Home</a>
+        </div>
+    </div>
 
-    </body>
-</html>
-    
+</div>
+{% endblock %}

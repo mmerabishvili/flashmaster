@@ -1,36 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Flashcard</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-    <h2>Create a New Flaschard</h2>
+{% block title %}Create Flashcard | FlashMaster{% endblock %}
 
-    <form method="POST">
-        <label for="question">Question:</label><br>
-        <input type="text" name="question"required><br><br>
+{% block content %}
+<div class="container mt-5">
 
-        <label for="answer">Answer:</label><br>
-        <input type="text" name="answer"required><br><br>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h2 class="text-center mb-4">➕ Create a New Flashcard</h2>
 
-        <input type="hidden" name="topic" value="{{ topic }}">
-        <p><strong>Topic:</strong> {{ topic }}</p>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            {% if category == 'flashcard' %}
+                                <div class="alert alert-success text-center mb-3">{{ message }}</div>
+                            {% elif category == 'error' %}
+                                <div class="alert alert-danger text-center mb-3">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="question" class="form-label">Question:</label>
+                        <input type="text" name="question" class="form-control" required>
+                    </div>
 
-        <button type="submit">Create Flaschard</button>
-    </form>
+                    <div class="mb-3">
+                        <label for="answer" class="form-label">Answer:</label>
+                        <input type="text" name="answer" class="form-control" required>
+                    </div>
 
-    <p><a href="{{ url_for('main.home') }}">Back to Home</a></p>
+                    <input type="hidden" name="topic" value="{{ topic }}">
+                    <p class="text-center"><strong>Topic:</strong> {{ topic }}</p>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-</body>
-</html>
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <button type="submit" class="btn btn-success">✅ Create Flashcard</button>
+                        <a href="{{ url_for('main.home') }}" class="btn btn-secondary">🏠 Back to Home</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

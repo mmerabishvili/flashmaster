@@ -1,30 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Progress</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-    <h2>📊 Your Study Progress</h2>
+{% block title %}Progress | FlashMaster{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">📊 Your Study Progress</h2>
+
+    <div class="text-center mb-4">
+        <a href="{{ url_for('main.home') }}" class="btn btn-secondary">🏠 Back to Home</a>
+    </div>
 
     {% if topics %}
         {% for topic_name, attempts in topics.items() %}
-            <h3>{{topic_name}}</h3>
-            <ul>
-                {% for session in attempts %}
-                    <li>
-                        🧠 Attempt #{{ loop.revindex }} — 
-                        📅 {{ session.timestamp.strftime('%Y-%m-%d %H:%M') }} —
-                        ✅ {{ session.correct }}/{{ session.total }} correct
-                        ({{ (session.correct / session.total * 100) | round(1) }}%)
-                    </li>
-                {% endfor %}
-            </ul>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">{{ topic_name }}</h4>
+                    <ul class="list-group list-group-flush">
+                        {% for session in attempts %}
+                        <li class="list-group-item">
+                            🧠 Attempt #{{ loop.revindex }} — 
+                            📅 {{ session.timestamp | localtime }} — 
+                            ✅ {{ session.correct }}/{{ session.total }} correct 
+                            ({{ (session.correct / session.total * 100) | round(1) }}%)
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         {% endfor %}
     {% else %}
-        <p>No study sessions yet. Start studying to track your progress!</p>
+        <div class="alert alert-info text-center">
+            No study sessions yet. Start studying to track your progress!
+        </div>
     {% endif %}
 
-    <p><a href="{{ url_for('main.home') }}">🏠 Back to Home</a></p>
-</body>
-</html>
+</div>
+{% endblock %}

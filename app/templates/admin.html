@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Admin Panel — User Management</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category in ['admin'] %}
+                        <div class="alert alert-success text-center mb-3">{{ message }}</div>
+                    {% elif category == 'error' %}
+                        <div class="alert alert-danger text-center mb-3">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+
+        <div class="text-center mb-4">
+            <a href="{{ url_for('main.home') }}" class="btn btn-secondary">🏠 Back to Home</a>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Admin?</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+                    <td>
+                        {% if not user.is_admin %}
+                            <form method="POST" action="{{ url_for('main.delete_user', user_id=user.id) }}" style="display:inline;">
+                                <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this user?')">Delete</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('main.reset_password', user_id=user.id) }}" style="display:inline;">
+                                <button class="btn btn-warning btn-sm">Reset Password</button>
+                            </form>
+                        {% else %}
+                            <em>Admin</em>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
